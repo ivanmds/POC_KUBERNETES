@@ -5,3 +5,7 @@ metadata:
 data:
   mongoConnectionString: 'mongodb://user:pwd@mongo-service:27017/admin'
   kafkaConnectionString: 'kafka-service:9092'
+  topicCustomerExternalEvents: 'customer_external_events'
+  topicPaymentExternalEvents: 'pix_payment_external_events'
+  topicPaymentFraudAnalyseRequest: 'pix_payment_fraud_analyse_request'
+  topicPaymentFraudAnalyseResponse: 'pix_payment_fraud_analyse_response'

@@ -20,7 +20,6 @@ spec:
         image: confluentinc/cp-zookeeper:latest
         ports: 
         - containerPort: 2181
-        - containerPort: 2000
         env:
           - name: ZOOKEEPER_CLIENT_PORT
             value: '2181'
@@ -38,15 +37,6 @@ spec:
     - name: port1
       protocol: TCP
       port: 2181
-    - name: port2
-      protocol: TCP
-      port: 2000
-
-#namespace
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: kafka-context
 ---
 #kafka
 apiVersion: apps/v1
@@ -55,7 +45,6 @@ metadata:
   name: kafka-deployment
   labels:
     app: kafka
-  #namespace: kafka-context
 spec:
   replicas: 1
   selector:
@@ -66,43 +55,18 @@ spec:
       labels:
         app: kafka
     spec:
-      volumes:
-      - name: shared-data
-        emptyDir: {}
-
       containers:
-      # - name: zookeeper
-      #   image: confluentinc/cp-zookeeper:latest
-      #   ports: 
-      #   - containerPort: 2181
-      #   - containerPort: 2000
-      #   volumeMounts:
-      #   - name: shared-data
-      #     mountPath: /usr/share/zookepper
-      #   env:
-      #     - name: ENABLE_CLIENT_SASL_KEY
-      #       value: 'false'
-      #     - name: ZOOKEEPER_CLIENT_PORT
-      #       value: '2181'
-      #     - name: ZOOKEEPER_TICK_TIME
-      #       value: '2000'
-
       - name: kafka
         image: confluentinc/cp-kafka:latest
         ports:
         - containerPort: 9092
-        - containerPort: 9101
-        - containerPort: 29092
-        volumeMounts:
-        - name: shared-data
-          mountPath: /usr/share/kafka
         env:
           - name: KAFKA_BROKER_ID
             value: '1'
           - name: KAFKA_ZOOKEEPER_CONNECT
             value: zookeeper-service:2181
           - name: KAFKA_ADVERTISED_LISTENERS
-            value: PLAINTEXT://kafka-service:29092,PLAINTEXT_HOST://kafka-service:9092
+            value: PLAINTEXT://localhost:29092,PLAINTEXT_HOST://kafka-service:9092
           - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
             value: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
           - name: KAFKA_INTER_BROKER_LISTENER_NAME
@@ -114,22 +78,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-service
-  # namespace: kafka-context
 spec:
+  type: NodePort
   selector:
     app: kafka
-  type: NodePort
   ports:
-    - name: port1
-      protocol: TCP
+    - protocol: TCP
       port: 9092
-      nodePort: 32010
-    - name: port2
-      protocol: TCP
-      port: 9101      
-    - name: port3
-      protocol: TCP
-      port: 29092
+      nodePort: 31010     
 ---
 #kafdrop
 apiVersion: apps/v1
@@ -138,7 +94,6 @@ metadata:
   name: kafdrop-deployment
   labels:
     app: kafdrop
-  #namespace: kafka-context
 spec:
   replicas: 1
   selector:
@@ -156,13 +111,12 @@ spec:
         - containerPort: 9000
         env:
         - name: KAFKA_BROKERCONNECT
-          value: '192.168.49.2:32010'
+          value: '192.168.49.2:31010'
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: kafdrop-service
-  #namespace: kafka-context
 spec:
   selector:
     app: kafdrop

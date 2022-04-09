@@ -1,30 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-deployment
+  name: payment-deployment
   labels:
-    app: customer
+    app: payment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: customer
+      app: payment
   template:
     metadata:
       labels:
-        app: customer
+        app: payment
     spec:
       containers:
-      - name: customer
-        image: ivanmds/poc_event_driven_customer
+      - name: payment
+        image: ivanmds/poc_event_driven_payment:1.0.3
         ports:
-        - containerPort: 3000
+        - containerPort: 3002
         env:
           - name: TOPIC_EXTERNAL_EVENTS
             valueFrom:
               configMapKeyRef:
                 name: all-configs
-                key: topicCustomerExternalEvents
+                key: topicPaymentExternalEvents
+          - name: TOPIC_FRAUD_ANALYZE_REQUEST
+            valueFrom:
+              configMapKeyRef:
+                name: all-configs
+                key: topicPaymentFraudAnalyseRequest
+          - name: TOPIC_FRAUD_ANALYZE_RESPONSE
+            valueFrom:
+              configMapKeyRef:
+                name: all-configs
+                key: topicPaymentFraudAnalyseResponse
           - name: MONGO_CONNECTION_STRING
             valueFrom:
               configMapKeyRef:
@@ -40,11 +50,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: customer-service
+  name: payment-service
 spec:
   selector:
-    app: customer
+    app: payment
   type: NodePort
   ports:
-    - port: 3000
-      nodePort: 30001
+    - port: 3002
+      nodePort: 30002
