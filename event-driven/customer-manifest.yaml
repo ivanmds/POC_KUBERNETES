@@ -17,6 +17,13 @@ spec:
       containers:
       - name: customer
         image: ivanmds/poc_event_driven_customer
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100mi
+          limits:
+            cpu: 200m
+            memory: 200mi
         ports:
         - containerPort: 3000
         env:
