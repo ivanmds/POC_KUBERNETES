@@ -7,17 +7,17 @@ spec:
   - host: a265d3d40068f47588dad4e57ea0a2e5-810116333.us-west-2.elb.amazonaws.com
     http:
       paths:
-      - path: /mongodb
+      # - path: /mongodb
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: mongo-service
+      #       port:
+      #         number: 32767
+      - path: /customer
         pathType: Prefix
         backend:
           service:
-            name: mongo-service
+            name: customer-service
             port:
-              number: 32767
-      - path: /kafka
-        pathType: Prefix
-        backend:
-          service:
-            name: mongo-service
-            port:
-              number: 32767
+              number: 30001
