@@ -4,7 +4,7 @@ metadata:
   name: ingress-controller-general
 spec:
   rules:
-  - host: a265d3d40068f47588dad4e57ea0a2e5-810116333.us-west-2.elb.amazonaws.com
+  - host: bankly.example.com
     http:
       paths:
       # - path: /mongodb
