@@ -14,3 +14,10 @@ spec:
             name: mongo-service
             port:
               number: 32767
+      - path: /kafka
+        pathType: Prefix
+        backend:
+          service:
+            name: mongo-service
+            port:
+              number: 32767
