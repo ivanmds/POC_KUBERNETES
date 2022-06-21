@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: all-configs
 data:
-  mongoConnectionString: 'mongodb://user:pwd@mongo-service:27017/admin'
-  kafkaConnectionString: 'kafka-service:9092'
+  mongoConnectionString: 'mongodb://user:pwd@mongo-service/admin'
+  kafkaConnectionString: 'kafka-service'
   topicCustomerExternalEvents: 'customer_external_events'
   topicPaymentExternalEvents: 'pix_payment_external_events'
   topicPaymentFraudAnalyseRequest: 'pix_payment_fraud_analyse_request'
