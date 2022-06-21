@@ -1,12 +1,38 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: external-nginx
+  name: nginx-service-test
   namespace: default
 spec:
-  type: LoadBalancer
   selector:
     app: nginx
   ports:
     - port: 80
       targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+spec:
+  rules:
+  - host: afad1eee20b9144659eece2d16bad96d-942479940.us-west-2.elb.amazonaws.com
+    http:
+      paths:
+      # - path: /mongodb
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: mongo-service
+      #       port:
+      #         number: 32767
+      - path: /nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service-test
+            port:
+              number: 80
