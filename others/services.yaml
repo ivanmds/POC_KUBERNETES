@@ -4,6 +4,7 @@ metadata:
   name: external-nginx
   namespace: default
 spec:
+  type: LoadBalancer
   selector:
     app: nginx
   ports:
