@@ -15,7 +15,6 @@ spec:
       #       port:
       #         number: 32767
       - path: /customer
-        pathType: Prefix
         backend:
           service:
             name: customer-service
