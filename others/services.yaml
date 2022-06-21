@@ -20,10 +20,10 @@ metadata:
 
 spec:
   rules:
-  - host: kube.acessobank-stg.com.br
+  - host: nginx.acessobank-stg.com.br
     http:
       paths:
-      - path: /nginx
+      - path: /
         pathType: Prefix
         backend:
           service:
