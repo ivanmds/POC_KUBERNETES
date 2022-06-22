@@ -25,7 +25,9 @@ spec:
   - host: k8s.acessobank-stg.com.br
     http:
       paths:
-      - path: "/nginx"
+      - path: /nginx
         backend:
-          serviceName: nginx-service-test
-          servicePort: 30000
+          service:
+            name: nginx-service-test
+            port:
+              number: 30000
