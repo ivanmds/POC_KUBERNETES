@@ -22,10 +22,10 @@ spec:
       port:
         number: 30000
   rules:
-  - host: k8s.acessobank-stg.com.br/nginx
+  - host: k8s.acessobank-stg.com.br
     http:
       paths:
-      - path: "/"
+      - path: "/nginx"
         pathType: Prefix
         backend:
           service:
