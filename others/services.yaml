@@ -6,10 +6,10 @@ metadata:
 spec:
   selector:
     app: nginx
+  type: NodePort
   ports:
     - port: 80
-      targetPort: 80
-  type: ClusterIP
+      nodePort: 30000
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -20,13 +20,13 @@ metadata:
 
 spec:
   rules:
-  - host: afad1eee20b9144659eece2d16bad96d-942479940.us-west-2.elb.amazonaws.com
+  - host: ngnix.kube.acessobank-stg.com.br
     http:
       paths:
-      - path: "/nginx"
+      - path: "/"
         pathType: Prefix
         backend:
           service:
             name: nginx-service-test
             port:
-              number: 80
+              number: 30000
