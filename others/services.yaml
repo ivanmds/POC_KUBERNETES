@@ -22,7 +22,7 @@ spec:
       port:
         number: 30000
   rules:
-  - host: ngnix.kube.acessobank-stg.com.br
+  - host: afad1eee20b9144659eece2d16bad96d-942479940.us-west-2.elb.amazonaws.com
     http:
       paths:
       - path: "/"
