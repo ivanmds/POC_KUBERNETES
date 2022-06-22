@@ -25,7 +25,7 @@ spec:
   - host: k8s.acessobank-stg.com.br
     http:
       paths:
-      - path: /nginx
+      - path: /
         pathType: Prefix
         backend:
           service:
