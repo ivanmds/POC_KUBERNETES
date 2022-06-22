@@ -19,6 +19,11 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 
 spec:
+  defaultBackend:
+    service:
+      name: nginx-service-test
+      port:
+        number: 30000
   rules:
   - host: ngnix.kube.acessobank-stg.com.br
     http:
