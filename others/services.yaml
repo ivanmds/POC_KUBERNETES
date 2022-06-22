@@ -26,6 +26,7 @@ spec:
     http:
       paths:
       - path: /nginx
+        pathType: Prefix
         backend:
           service:
             name: nginx-service-test
