@@ -26,9 +26,6 @@ spec:
     http:
       paths:
       - path: "/nginx"
-        pathType: Prefix
         backend:
-          service:
-            name: nginx-service-test
-            port:
-              number: 30000
+          serviceName: nginx-service-test
+          servicePort: 30000
