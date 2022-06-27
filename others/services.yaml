@@ -6,29 +6,30 @@ metadata:
 spec:
   selector:
     app: nginx
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 80
-      targetPort: 80
+      nodePort: 30000
 ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: test-ingress
-# spec:
-#   defaultBackend:
-#     service:
-#       name: nginx-service-test
-#       port:
-#         number: 30000
-#   rules:
-#   - host: afad1eee20b9144659eece2d16bad96d-942479940.us-west-2.elb.amazonaws.com
-#     http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: nginx-service-test
-#             port:
-#               number: 30000
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: k8s.acessobank-stg.com.br
+      port:
+        number: 30000
+  rules:
+  - host: k8s.acessobank-stg.com.br
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service-test
+            port:
+              number: 30000
