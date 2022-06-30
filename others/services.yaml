@@ -9,7 +9,7 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      nodePort: 30000
+      targetPort: 80
       protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1
@@ -31,4 +31,4 @@ spec:
             service:
               name: nginx-service-test
               port:
-                number: 30000
+                number: 80
