@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: test-ingress
+  namespace: game-2048
   name: nginx-service-test
 spec:
   selector:
@@ -15,7 +15,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: test-ingress
+  namespace: game-2048
   name: ingress-nginx
   annotations:
     alb.ingress.kubernetes.io/scheme: internal
