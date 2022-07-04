@@ -25,7 +25,7 @@ spec:
   rules:
     - http:
         paths:
-        - path: /
+        - path: /nginx
           pathType: Prefix
           backend:
             service:
