@@ -10,10 +10,10 @@ spec:
   rules:
     - http:
         paths:
-        - path: /mongodb
+        - path: /kafka
           pathType: Prefix
           backend:
             service:
-              name: mongo-service
+              name: kafdrop-service
               port:
                 number: 80
