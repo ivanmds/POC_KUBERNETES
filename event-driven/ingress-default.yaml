@@ -17,7 +17,9 @@ spec:
               name: kafdrop-service
               port:
                 number: 80
-        - path: /customers
+    - host: "customer.k8s.acessobank-stg.com.br"
+      http:
+        - path: /
           pathType: Prefix
           backend:
             service:
