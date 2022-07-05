@@ -19,6 +19,7 @@ spec:
                 number: 80
     - host: "customer.k8s.acessobank-stg.com.br"
       http:
+        paths:
         - path: /
           pathType: Prefix
           backend:
