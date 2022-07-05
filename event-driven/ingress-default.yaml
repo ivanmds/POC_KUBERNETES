@@ -17,3 +17,10 @@ spec:
               name: kafdrop-service
               port:
                 number: 80
+        - path: /customers
+          pathType: Prefix
+          backend:
+            service:
+              name: customer-service
+              port:
+                number: 80
