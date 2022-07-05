@@ -32,3 +32,10 @@ spec:
               name: nginx-service-test
               port:
                 number: 80
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-service-test
+              port:
+                number: 80
