@@ -18,7 +18,6 @@ metadata:
   namespace: game-2048
   name: ingress-nginx
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: instance
 spec:
