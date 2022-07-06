@@ -8,20 +8,23 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-      - http:
+    - host: kafka.kube-test.acessobank-stg.com.br
+      http:
         paths:
-        - path: kafka.kube-test.acessobank-stg.com.br
+        - path: /
           pathType: Prefix
           backend:
             service:
               name: kafdrop-service
               port:
                 number: 80
-        - path: customer.kube-test.acessobank-stg.com.br
+    - host: customer.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
           pathType: Prefix
           backend:
             service:
               name: customer-service
               port:
                 number: 80
-     
