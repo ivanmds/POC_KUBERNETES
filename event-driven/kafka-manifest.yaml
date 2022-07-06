@@ -120,8 +120,7 @@ metadata:
 spec:
   selector:
     app: kafdrop
-  type: NodePort
   ports:
-  - protocol: TCP
-    port: 9000
-    nodePort: 31000
+    - protocol: TCP
+      port: 80
+      targetPort: 9000
