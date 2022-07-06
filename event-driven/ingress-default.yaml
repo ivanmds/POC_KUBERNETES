@@ -17,7 +17,7 @@ spec:
             service:
               name: kafdrop-service
               port:
-                number: 31000
+                number: 80
     - host: customer.kube-test.acessobank-stg.com.br
       http:
         paths:
