@@ -38,3 +38,13 @@ spec:
               name: mongo-service
               port:
                 number: 80
+    - host: payment.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: payment-service
+              port:
+                number: 80

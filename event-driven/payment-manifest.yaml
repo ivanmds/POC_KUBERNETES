@@ -54,7 +54,7 @@ metadata:
 spec:
   selector:
     app: payment
-  type: NodePort
   ports:
-    - port: 3002
-      nodePort: 30002
+    - protocol: TPC
+    - port: 80
+      targetPort: 3002
