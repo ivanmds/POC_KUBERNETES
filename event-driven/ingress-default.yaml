@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: "http://kafka.kube-test.acessobank-stg.com.br"
+    - host: "kafka.kube-test.acessobank-stg.com.br"
       http:
         paths:
         - path: /
@@ -18,7 +18,7 @@ spec:
               name: kafdrop-service
               port:
                 number: 80
-    - host: "http://customer.kube-test.acessobank-stg.com.br"
+    - host: "customer.kube-test.acessobank-stg.com.br"
       http:
         paths:
         - path: /
