@@ -55,6 +55,6 @@ spec:
   selector:
     app: payment
   ports:
-    - protocol: TPC
+    - protocol: TCP
       port: 80
       targetPort: 3002
