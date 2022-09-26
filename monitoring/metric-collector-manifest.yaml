@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metric-collector-config
+data:
+  metric-collector.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          http:
+
+    processors:
+      batch:
+
+    exporters:
+
+      logging:
+
+      prometheusremotewrite:
+        endpoint: "http://prometheus-service:9090/api/v1/write"
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [logging, prometheusremotewrite]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metric-collector-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metric-collector
+  template:
+    metadata:
+      labels:
+        app: metric-collector
+    spec:
+      containers:
+      - name: metric-collector
+        image: otel/opentelemetry-collector
+        ports:
+          - containerPort: 4318
+        args:
+        - --config=/config/metric-collector.yaml
+        volumeMounts:
+        - mountPath: /config
+          name: metric-collector-volume
+          readOnly: true
+        env:
+          - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+            value: http://metric-collector-service:4318
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://metric-collector-service:4318
+      volumes:
+        - name: metric-collector-volume
+          configMap:
+            name: metric-collector-config
+            items:
+              - key: metric-collector.yaml
+                path: metric-collector.yaml
+   
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: metric-collector-service
+spec:
+  selector:
+    app: metric-collector
+  ports:
+    - protocol: TCP
+      port: 4318
+      targetPort: 4318
