@@ -53,6 +53,7 @@ metadata:
   name: payment-service
 spec:
   selector:
+  
     app: payment
   ports:
     - protocol: TCP

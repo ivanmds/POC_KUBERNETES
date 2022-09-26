@@ -1,0 +1,72 @@
+#eksctl create cluster --name  kube-poc-10-ec2-spot  --region us-west-2 --version 1.22
+#eksctl create nodegroup --config-file=node-group.yaml
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+managedNodeGroups:
+# - name: kube-poc-ivan-node-groupd-ctr_plane
+#   amiFamily: AmazonLinux2
+#   desiredCapacity: 1
+#   minSize: 1
+#   maxSize: 2
+#   spot: true
+#   instanceTypes:
+#   - t3.large
+#   - t2.medium
+#   iam:
+#     withAddonPolicies:
+#       autoScaler: true
+#       cloudWatch: true
+#       albIngress: true
+#   privateNetworking: true
+#   taints:
+#     - key: spotInstance
+#       value: "true"
+#       effect: PreferNoSchedule
+#   labels:
+#     alpha.eksctl.io/cluster-name: eksworkshop-eksctl
+#     alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-ctr_plane
+#     intent: apps
+#   tags:
+#     alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-ctr_plane
+#     alpha.eksctl.io/nodegroup-type: managed
+#     k8s.io/cluster-autoscaler/node-template/label/intent: apps
+#     k8s.io/cluster-autoscaler/node-template/taint/spotInstance: "true:PreferNoSchedule"
+
+- name: dataPlane
+  amiFamily: AmazonLinux2
+  desiredCapacity: 2
+  minSize: 1
+  maxSize: 3
+  spot: true
+  instanceTypes:
+  - t3.large
+  - t2.medium
+  iam:
+    withAddonPolicies:
+      autoScaler: true
+      cloudWatch: true
+      albIngress: true
+  privateNetworking: true
+  taints:
+    - key: spotInstance
+      value: "true"
+      effect: PreferNoSchedule
+  labels:
+    alpha.eksctl.io/cluster-name: kube-poc-10-ec2-spot
+    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane
+    intent: apps
+  tags:
+    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane
+    alpha.eksctl.io/nodegroup-type: managed
+    k8s.io/cluster-autoscaler/node-template/label/intent: apps
+    k8s.io/cluster-autoscaler/node-template/taint/spotInstance: "true:PreferNoSchedule"
+
+metadata:
+  name: kube-poc-10-ec2-spot
+  region: 'us-west-2'
+  version: "1.22"
+
+
+  #delete ng-d608bbca node-group

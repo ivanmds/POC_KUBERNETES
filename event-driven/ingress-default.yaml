@@ -8,43 +8,73 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: kafka.kube-test.acessobank-stg.com.br
+    # - host: kafka.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: kafdrop-service
+    #           port:
+    #             number: 80
+    # - host: customer.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: customer-service
+    #           port:
+    #             number: 80
+    # - host: mongo.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: mongo-service
+    #           port:
+    #             number: 80
+    # - host: payment.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: payment-service
+    #           port:
+    #             number: 80
+    - host: prometheus.kube-test.acessobank-stg.com.br
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: kafdrop-service
+              name: prometheus-service
               port:
-                number: 80
-    - host: customer.kube-test.acessobank-stg.com.br
+                number: 9090
+    - host: otlp-test.kube-test.acessobank-stg.com.br
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: customer-service
+              name: customer-otlp-service
               port:
                 number: 80
-    - host: mongo.kube-test.acessobank-stg.com.br
+    - host: metric-collector.kube-test.acessobank-stg.com.br
       http:
         paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: mongo-service
+              name: metric-collector-service
               port:
-                number: 80
-    - host: payment.kube-test.acessobank-stg.com.br
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: payment-service
-              port:
-                number: 80
+                number: 4318
