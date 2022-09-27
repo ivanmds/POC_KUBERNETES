@@ -9,6 +9,7 @@ data:
       otlp:
         protocols:
           http:
+          grpc:
 
     processors:
       batch:
@@ -16,12 +17,53 @@ data:
     exporters:
 
       logging:
+        loglevel: debug
+
+      loki:
+        endpoint: "http://loki-service:3100/loki/api/v1/push"
+        format: json
+        labels:
+          resource:
+            deployment.environment: "deployment_environment"
+            host.name: "host_name"
+            service.name: "service_name"
+            service.namespace: "service_namespace"
+          record:
+            severity: "severity"
+        tenant_id: tenant1
+        tls:
+          insecure: true
 
       prometheusremotewrite:
         endpoint: "http://prometheus-service:9090/api/v1/write"
+        tls:
+          insecure: true
+
+      zipkin:
+        endpoint: "http://ziokin-service:9411/api/v2/spans"
+
+    extensions:
+      health_check:
+      pprof:
+      zpages:
 
     service:
+      
+      extensions: [health_check,pprof,zpages]
+
+      telemetry:
+        logs:
+          level: "debug"
+      
       pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [zipkin]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [loki]
         metrics:
           receivers: [otlp]
           processors: [batch]
@@ -43,20 +85,20 @@ spec:
     spec:
       containers:
       - name: metric-collector
-        image: otel/opentelemetry-collector
+        image: otel/opentelemetry-collector-contrib
         ports:
           - containerPort: 4318
+          - containerPort: 4317
+          - containerPort: 8888
+          - containerPort: 8889
+          - containerPort: 55679
+          - containerPort: 13133
         args:
         - --config=/config/metric-collector.yaml
         volumeMounts:
         - mountPath: /config
           name: metric-collector-volume
           readOnly: true
-        env:
-          - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
-            value: http://metric-collector-service:4318
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: http://metric-collector-service:4318
       volumes:
         - name: metric-collector-volume
           configMap:
@@ -64,7 +106,6 @@ spec:
             items:
               - key: metric-collector.yaml
                 path: metric-collector.yaml
-   
 ---
 apiVersion: v1
 kind: Service
@@ -74,6 +115,27 @@ spec:
   selector:
     app: metric-collector
   ports:
-    - protocol: TCP
+    - name: otlp-http
+      protocol: TCP
       port: 4318
       targetPort: 4318
+    - name: otlp-grpc
+      protocol: TCP
+      port: 4317
+      targetPort: 4317
+    - name: metrics-query
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    - name: metrics-other
+      protocol: TCP
+      port: 8889
+      targetPort: 8889
+    - name: health-check
+      protocol: TCP
+      port: 13133
+      targetPort: 13133
+    - name: zpages
+      protocol: TCP
+      port: 55679
+      targetPort: 55679
