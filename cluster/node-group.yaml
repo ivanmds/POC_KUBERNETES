@@ -1,5 +1,22 @@
-#eksctl create cluster --name  kube-poc-10-ec2-spot  --region us-west-2 --version 1.22
-#eksctl create nodegroup --config-file=node-group.yaml
+# eksctl create cluster --name  kube-poc-10-ec2-spot2  --region us-west-2 --version 1.23
+# eksctl create nodegroup --config-file=node-group.yaml
+
+# eksctl create cluster --name  kube-poc-10-ec2-spot3 --spot --instance-types=t2.large,t2.medium  --version 1.23
+# eksctl create nodegroup --cluster=kube-poc-10-ec2-spot2 --spot --instance-types=t2.large,t2.medium  --version 1.23
+
+#------- config ebs
+# eksctl utils associate-iam-oidc-provider --cluster kube-poc-10-ec2-spot3  --approve
+# eksctl create iamserviceaccount   --name ebs-csi-controller-sa   --namespace kube-system   --cluster kube-poc-10-ec2-spot3    --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy   --approve   --role-only   --role-name AmazonEKS_EBS_CSI_DriverRole
+# eksctl create addon --name aws-ebs-csi-driver --cluster kube-poc-10-ec2-spot3 --service-account-role-arn arn:aws:iam::892251137903:role/AmazonEKS_EBS_CSI_DriverRole --force
+#------
+
+#------ config ingress
+
+# apply recomendation in https://aws.amazon.com/pt/premiumsupport/knowledge-center/eks-alb-ingress-controller-fargate/
+#  https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/deploy/installation/
+
+#--------
+
 ---
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
@@ -41,7 +58,7 @@ managedNodeGroups:
   maxSize: 3
   spot: true
   instanceTypes:
-  - t3.large
+  - t2.large
   - t2.medium
   iam:
     withAddonPolicies:
@@ -55,10 +72,10 @@ managedNodeGroups:
       effect: PreferNoSchedule
   labels:
     alpha.eksctl.io/cluster-name: kube-poc-10-ec2-spot
-    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane
+    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane2
     intent: apps
   tags:
-    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane
+    alpha.eksctl.io/nodegroup-name: kube-poc-ivan-node-groupd-data_plane2
     alpha.eksctl.io/nodegroup-type: managed
     k8s.io/cluster-autoscaler/node-template/label/intent: apps
     k8s.io/cluster-autoscaler/node-template/taint/spotInstance: "true:PreferNoSchedule"
@@ -66,7 +83,7 @@ managedNodeGroups:
 metadata:
   name: kube-poc-10-ec2-spot
   region: 'us-west-2'
-  version: "1.22"
+  version: "1.23"
 
 
   #delete ng-d608bbca node-group

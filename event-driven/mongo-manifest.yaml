@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ebs-gp2
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,9 +26,16 @@ spec:
       labels:
         app: mongodb
     spec:
+      volumes:
+        - name: mongodb
+          persistentVolumeClaim:
+            claimName: mongodb-claim
       containers:
       - name: mongodb
         image: mongo
+        volumeMounts:
+          - mountPath: "/data/db"
+            name: mongodb
         resources:
           requests:
             cpu: "500m"

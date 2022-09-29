@@ -18,16 +18,16 @@ spec:
     #           name: kafdrop-service
     #           port:
     #             number: 80
-    # - host: customer.kube-test.acessobank-stg.com.br
-    #   http:
-    #     paths:
-    #     - path: /
-    #       pathType: Prefix
-    #       backend:
-    #         service:
-    #           name: customer-service
-    #           port:
-    #             number: 80
+    - host: customer.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: customer-service
+              port:
+                number: 80
     # - host: mongo.kube-test.acessobank-stg.com.br
     #   http:
     #     paths:
@@ -38,43 +38,43 @@ spec:
     #           name: mongo-service
     #           port:
     #             number: 80
-    # - host: payment.kube-test.acessobank-stg.com.br
+    - host: payment.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: payment-service
+              port:
+                number: 80
+    # - host: prometheus.kube-test.acessobank-stg.com.br
     #   http:
     #     paths:
     #     - path: /
     #       pathType: Prefix
     #       backend:
     #         service:
-    #           name: payment-service
+    #           name: prometheus-service
+    #           port:
+    #             number: 9090
+    # - host: otlp-test.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: customer-otlp-service
     #           port:
     #             number: 80
-    - host: prometheus.kube-test.acessobank-stg.com.br
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: prometheus-service
-              port:
-                number: 9090
-    - host: otlp-test.kube-test.acessobank-stg.com.br
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: customer-otlp-service
-              port:
-                number: 80
-    - host: metric-collector.kube-test.acessobank-stg.com.br
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: metric-collector-service
-              port:
-                number: 4318
+    # - host: metric-collector.kube-test.acessobank-stg.com.br
+    #   http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: metric-collector-service
+    #           port:
+    #             number: 4318
