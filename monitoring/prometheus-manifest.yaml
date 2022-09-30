@@ -16,7 +16,6 @@ data:
       scrape_interval: 3s
       static_configs:
       - targets: ['metric-collector-service:8888']
-      - targets: ['metric-collector-service:8889']
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,6 +33,9 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: prometheus
         image: prom/prometheus:latest
@@ -41,11 +43,24 @@ spec:
         - containerPort: 9090
         args:
         - '--config.file=/config/prometheus-config.yaml'
+        - '--storage.tsdb.path=/data/prometheus'
         - '--web.enable-remote-write-receiver'
         volumeMounts:
         - mountPath: /config
           name: prometheus-config
+        - mountPath: '/data/prometheus'
+          name: prometheus-vl
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
       volumes:
+        - name: prometheus-vl
+          persistentVolumeClaim:
+            claimName: observability-pvc
         - name: prometheus-config
           configMap:
             name: prometheus-config

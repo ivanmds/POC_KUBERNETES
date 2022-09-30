@@ -24,6 +24,13 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 30
           timeoutSeconds: 20
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
         env:
           - name: COLLECTOR_URI
             value: "http://metric-collector-service:4317"

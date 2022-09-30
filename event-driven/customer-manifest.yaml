@@ -19,7 +19,7 @@ spec:
         image: ivanmds/poc_event_driven_customer
         resources:
           requests:
-            cpu: "250m"
+            cpu: "250m" 
             memory: "256Mi"
           limits:
             cpu: "500m"

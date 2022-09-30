@@ -48,26 +48,26 @@ spec:
               name: payment-service
               port:
                 number: 80
-    # - host: prometheus.kube-test.acessobank-stg.com.br
-    #   http:
-    #     paths:
-    #     - path: /
-    #       pathType: Prefix
-    #       backend:
-    #         service:
-    #           name: prometheus-service
-    #           port:
-    #             number: 9090
-    # - host: otlp-test.kube-test.acessobank-stg.com.br
-    #   http:
-    #     paths:
-    #     - path: /
-    #       pathType: Prefix
-    #       backend:
-    #         service:
-    #           name: customer-otlp-service
-    #           port:
-    #             number: 80
+    - host: grafana.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: grafana-service
+              port:
+                number: 3000
+    - host: tracing.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: zipkin-service
+              port:
+                number: 9411
     # - host: metric-collector.kube-test.acessobank-stg.com.br
     #   http:
     #     paths:

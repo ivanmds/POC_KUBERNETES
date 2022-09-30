@@ -19,6 +19,13 @@ spec:
         image: ivanmds/poc_event_driven_payment:1.0.3
         ports:
         - containerPort: 3002
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
         env:
           - name: TOPIC_EXTERNAL_EVENTS
             valueFrom:

@@ -34,17 +34,13 @@ data:
         tls:
           insecure: true
 
-
-      processors:
-        endpoint: "0.0.0.0:8889"
-
       prometheusremotewrite:
         endpoint: "http://prometheus-service:9090/api/v1/write"
         tls:
           insecure: true
 
       zipkin:
-        endpoint: "http://ziokin-service:9411/api/v2/spans"
+        endpoint: "http://zipkin-service:9411/api/v2/spans"
 
     extensions:
       health_check:
@@ -103,6 +99,13 @@ spec:
         - mountPath: /config
           name: metric-collector-volume
           readOnly: true
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
       volumes:
         - name: metric-collector-volume
           configMap:
