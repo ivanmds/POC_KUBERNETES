@@ -1,0 +1,105 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tempo-config
+data:
+  tempo-config.yaml: |
+    server:
+      http_listen_port: 3100
+
+    distributor:
+      receivers:
+        zipkin:
+          endpoint: "http://zipkin-service:9411"
+
+    ingester:
+      trace_idle_period: 10s               # the length of time after a trace has not received spans to consider it complete and flush it
+      max_block_bytes: 1_000_000           # cut the head block when it hits this size or ...
+      max_block_duration: 5m               #   this much time passes
+
+    compactor:
+      compaction:
+        compaction_window: 1h              # blocks in this time window will be compacted together
+        max_block_bytes: 100_000_000       # maximum size of compacted blocks
+        block_retention: 1h
+        compacted_block_retention: 10m
+
+    storage:
+      trace:
+        backend: local                     # backend configuration to use
+        block:
+          bloom_filter_false_positive: .05 # bloom filter false positive rate.  lower values create larger filters but fewer false positives
+          index_downsample_bytes: 1000     # number of bytes per index record
+          encoding: zstd                   # block encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd
+        wal:
+          path: /data/tempo/wal             # where to store the the wal locally
+          encoding: none                   # wal encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd
+        local:
+          path: /data/tempo/blocks
+        pool:
+          max_workers: 100                 # the worker pool mainly drives querying, but is also used for polling the blocklist
+          queue_depth: 10000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tempo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tempo
+  template:
+    metadata:
+      labels:
+        app: tempo
+    spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+      containers:
+      - name: tempo 
+        image: grafana/tempo:1.0.1
+        args:
+        - "-config.file=/config/tempo-config.yaml"
+        ports:
+        - containerPort: 3100
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        volumeMounts:
+          - mountPath: /config
+            name: tempo-config
+          - mountPath: /data/tempo/wal
+            name: tempo-vol
+          - mountPath: /data/tempo/blocks
+            name: tempo-vol
+      volumes:
+        - name: tempo-vol
+          persistentVolumeClaim:
+            claimName: observability-pvc
+        - name: tempo-config
+          configMap:
+            name: tempo-config
+            items:
+            - key: tempo-config.yaml
+              path: tempo-config.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo-service
+spec:
+  selector:
+    app: tempo
+  ports: 
+    - name: p1
+      protocol: TCP
+      port: 3100
+      targetPort: 3100

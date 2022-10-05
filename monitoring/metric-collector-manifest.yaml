@@ -42,6 +42,11 @@ data:
       zipkin:
         endpoint: "http://zipkin-service:9411/api/v2/spans"
 
+      jaeger:
+        endpoint: "jaeger-service:14250"
+        tls:
+          insecure: true
+
     extensions:
       health_check:
       pprof:
@@ -59,7 +64,7 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [zipkin]
+          exporters: [zipkin, jaeger]
         logs:
           receivers: [otlp]
           processors: [batch]

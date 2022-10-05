@@ -68,6 +68,16 @@ spec:
               name: zipkin-service
               port:
                 number: 9411
+    - host: jaeger.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jaeger-service
+              port:
+                number: 16686
     # - host: metric-collector.kube-test.acessobank-stg.com.br
     #   http:
     #     paths:
@@ -78,3 +88,13 @@ spec:
     #           name: metric-collector-service
     #           port:
     #             number: 4318
+    - host: bankly.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /customers
+          pathType: Prefix
+          backend:
+            service:
+              name: customer-service
+              port:
+                number: 80

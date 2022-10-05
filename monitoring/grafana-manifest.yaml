@@ -27,6 +27,12 @@ spec:
         volumeMounts:
           - mountPath: "/var/lib/grafana"
             name: grafana-vol
+          - mountPath: "/var/log/grafana"
+            name: grafana-vol
+          - mountPath: "/var/lib/grafana/plugins"
+            name: grafana-vol
+          - mountPath: "/etc/grafana/provisioning"
+            name: grafana-vol
         resources:
           requests:
             cpu: "100m"
