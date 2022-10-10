@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: ivanmds/poc_event_driven_payment:1.0.3
+        image: ivanmds2/poc_event_driven_payment:1.0.4
         ports:
         - containerPort: 3002
         resources:
@@ -52,6 +52,8 @@ spec:
               configMapKeyRef:
                 name: all-configs
                 key: kafkaConnectionString
+          - name: OTLP_ENDPOINT
+            value: "http://metric-collector-service:4317"
 
 ---
 apiVersion: v1

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backoffice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backoffice
+  template:
+    metadata:
+      labels:
+        app: backoffice
+    spec:
+      containers:
+      - name: backoffice
+        image: ivanmds2/poc_event_driven_backoffice:1.0.2
+        resources:
+          requests:
+            cpu: "250m" 
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        ports:
+        - containerPort: 80
+        env:
+          - name: COLLECTOR_URI
+            value: "http://metric-collector-service:4317"
+          - name: IS_GRPC
+            value: "YES"
+          - name: CUSTOMER_SERVICE_URI
+            value: "http://customer-service"
+          - name: PAYMENT_SERVICE_URI
+            value: "http://payment-service"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backoffice-service
+spec:
+  selector:
+    app: backoffice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

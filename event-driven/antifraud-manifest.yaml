@@ -1,22 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-deployment
-  labels:
-    app: customer
+  name: antifraud-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: customer
+      app: antifraud
   template:
     metadata:
       labels:
-        app: customer
+        app: antifraud
     spec:
       containers:
-      - name: customer
-        image: ivanmds2/poc_event_driven_customer:1.0.6
+      - name: antifraud
+        image: ivanmds2/poc_event_driven_antifraud:1.0.9
         resources:
           requests:
             cpu: "250m" 
@@ -24,14 +22,7 @@ spec:
           limits:
             cpu: "500m"
             memory: "512Mi"
-        ports:
-        - containerPort: 3001
         env:
-          - name: TOPIC_EXTERNAL_EVENTS
-            valueFrom:
-              configMapKeyRef:
-                name: all-configs
-                key: topicCustomerExternalEvents
           - name: MONGO_CONNECTION_STRING
             valueFrom:
               configMapKeyRef:
@@ -42,18 +33,7 @@ spec:
               configMapKeyRef:
                 name: all-configs
                 key: kafkaConnectionString
-          - name: OTLP_ENDPOINT
+          - name: COLLECTOR_URI
             value: "http://metric-collector-service:4317"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: customer-service
-spec:
-  selector:
-    app: customer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3001
+          - name: IS_GRPC
+            value: "YES"
