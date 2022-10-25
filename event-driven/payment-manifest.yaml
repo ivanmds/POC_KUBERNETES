@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: ivanmds2/poc_event_driven_payment:1.0.4
+        image: ivanmds2/poc_event_driven_payment:1.0.5
         ports:
         - containerPort: 3002
         resources:
@@ -26,6 +26,7 @@ spec:
           limits:
             cpu: "500m"
             memory: "512Mi"
+        
         env:
           - name: TOPIC_EXTERNAL_EVENTS
             valueFrom:

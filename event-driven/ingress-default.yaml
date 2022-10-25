@@ -48,6 +48,17 @@ spec:
               name: payment-service
               port:
                 number: 80
+
+    - host: bankly.kube-test.acessobank-stg.com.br
+      http:
+        paths:
+        - path: /api/v1/pix-payment
+          pathType: Prefix
+          backend:
+            service:
+              name: payment-service
+              port:
+                number: 80
     - host: grafana.kube-test.acessobank-stg.com.br
       http:
         paths:
@@ -85,6 +96,7 @@ spec:
           pathType: Prefix
           backend:
             service:
+            
               name: backoffice-service
               port:
                 number: 80
