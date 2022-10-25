@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backoffice
-        image: ivanmds2/poc_event_driven_backoffice:1.0.2
+        image: ivanmds2/poc_event_driven_backoffice:1.0.4
         resources:
           requests:
             cpu: "250m" 

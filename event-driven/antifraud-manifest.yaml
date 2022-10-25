@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: antifraud
-        image: ivanmds2/poc_event_driven_antifraud:1.0.9
+        image: ivanmds2/poc_event_driven_antifraud:1.0.10
         resources:
           requests:
             cpu: "250m" 

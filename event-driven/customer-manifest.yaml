@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: customer
-        image: ivanmds2/poc_event_driven_customer:1.0.6
+        image: ivanmds2/poc_event_driven_customer:1.0.7
         resources:
           requests:
             cpu: "250m" 
